@@ -1,0 +1,59 @@
+.lookbook{
+    margin-left: 30px;
+    padding-top: 100px;
+}
+
+.first{
+    display: flex;
+    width: 83%;
+    gap: 10px;
+    align-items: center;
+}
+
+.first img{
+    width: 30%;
+    height: 74vh;
+    object-fit: cover;
+}
+
+.second {
+    padding-top: 10px;
+    display: flex;
+    width: 54%;
+    gap: 10px;
+    align-items: center;
+}
+
+.second img{
+    width: 51%;
+    height: 74vh;
+    object-fit: cover;
+}
+
+.third {
+    margin-top: 60px;
+    display: flex;
+    width: 54%;
+    gap: 10px;
+    align-items: center;
+}
+
+.third img{
+    width: 51%;
+    height: 74vh;
+    object-fit: cover;
+}
+
+.fourth {
+    display: flex;
+    padding-top: 10px;
+    width: 54%;
+    gap: 10px;
+    align-items: center;
+}
+
+.fourth img{
+    width: 51%;
+    height: 74vh;
+    object-fit: cover;
+}

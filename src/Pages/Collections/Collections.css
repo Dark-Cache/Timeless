@@ -1,0 +1,26 @@
+.collect{
+    width: 100%;
+}
+
+.row-a {
+    display: flex;
+    gap: 4px;
+}
+
+.row-a img{
+    width: 90%;
+    height: 85vh;
+    object-fit: cover;
+}
+
+.row-b {
+    display: flex;
+    padding-top: 10px;
+    gap: 4px;
+}
+
+.row-b img{
+    width: 70%;
+    height: 74vh;
+    object-fit: cover;
+}

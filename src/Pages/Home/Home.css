@@ -1,0 +1,18 @@
+.display{
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.display h4{
+    display: relative;
+    font-weight: 500;
+}
+
+.video-container video{
+    width: 100%;    
+}
+.display-pic img{
+    width: 108%;
+    height: 145vh;
+}

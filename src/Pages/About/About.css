@@ -1,0 +1,55 @@
+.about-section{
+    display: flex;
+    gap: 20px;
+}
+
+.about-section img{
+    width: 50%;
+}
+
+.about-text{
+    margin-top: 26%;
+    font-size: 18px;
+}
+
+.about-text h3{
+    font-size: 40px;
+}
+
+.about-text h5{
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.mission{
+    display: flex;
+    margin-top: 4px;
+    gap: 2px;
+}
+
+.mission img{
+    width: 50%;
+}
+
+.mission-text{
+    padding-top: 20%;
+    padding-left: 10px;
+    font-size: 18px;
+    background-color: #ececec;
+}
+
+/* .mission-text h4{
+    font-size: 60px;
+} */
+
+.mission-text h3{
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.mission-text h2{
+    font-size: 20px;
+    font-weight: 500;
+    font-style: italic;
+}
+
