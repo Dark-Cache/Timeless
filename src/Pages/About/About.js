@@ -1,9 +1,9 @@
 import React from "react";
-import Navbar from "../../Components/Navbar/Navbar";
 import "./About.css";
 import aboutpic1 from '../../Assets/about1.jpg';
 import aboutpic2 from '../../Assets/about2.jpg';
-import Footer from "../../Components/Footer/Footer";
+
+
 
 const About = () => {
   return (
@@ -20,6 +20,8 @@ const About = () => {
               The name was inspired by a phrase my mother always told me: 
               “Your glory is timeless.”
           </h5>
+
+          <img className="less" src={aboutpic2} alt="about" /> 
         </div>
 
       </div>

@@ -1,14 +1,16 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
+
 import "./Collections.css";
 import "../Lookbook/Lookbook.css";
 
 import lookn from '../../Assets/lookbookn.jpg'
 import cap from '../../Assets/caps.jpg' 
-import tanktop from '../../Assets/blacktanktop.jpg'
+import tanktop from '../../Assets/wtt.png'
 
-import short from '../../Assets/blackshortfront.jpg'
-import croptop from '../../Assets/blackcroptop.jpg'
-import tshirt from '../../Assets/blackgoldstandard.jpg'
+import short from '../../Assets/bdf.png'
+import croptop from '../../Assets/batct.png'
+import tshirt from '../../Assets/bb.png'
 
 
 const Collections = () => {
@@ -18,15 +20,15 @@ const Collections = () => {
     
     
               <div className='row-a'>
-                <img src={lookn} alt='lookbook' />
-                <img src={cap} alt='lookbook' />
-                <img src={tanktop} alt='lookbook' />
+                <Link to="/allproduct" > <img src={lookn} alt='lookbook' /> </Link>
+                <Link to="/cap" > <img src={cap} alt='lookbook' /> </Link>
+                <Link to="/top" > <img src={tshirt} alt='lookbook' /> </Link>
               </div>
     
               <div className='row-b'>
-                <img src={short} alt='lookbook' />
-                <img src={croptop} alt='lookbook' />
-                <img src={tshirt} alt='lookbook' />
+               <Link to="/tank" > <img src={tanktop} alt='lookbook' /> </Link>
+               <Link to="/crop" > <img src={croptop} alt='lookbook' /> </Link>
+               <Link to="/short" > <img src={short} alt='lookbook' /> </Link>
               </div>
               
             </div>

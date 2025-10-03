@@ -18,28 +18,29 @@ const Footer = () => {
   return (
     <div className='footer'>
       <div className='join'>
-        <h2>JOIN THE COMMUNITY.</h2>
-        
+        <div className='line'>
+          <h2>JOIN THE COMMUNITY.</h2>
+          <h3>You will receive all the information regarding the next drops.</h3>
+        </div>
         <div className='subscribe'>
           {subscribed ? (
             <p className="thankyou">Thanks for subscribing!</p>
           ) : (
             <>
               <input 
-                type="text" 
+                type="email" 
                 placeholder='Email Address'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
               <button onClick={handleSubscribe}>
-                Subscribe <FaArrowRightLong />
+                SUBSCRIBE <FaArrowRightLong className='arrow' />
               </button>
             </>
           )}
         </div>
       </div>
 
-      <h3>You will receive all the information regarding the next drops.</h3>
 
       <div className='socials'>
         <h2>FOLLOW US </h2>
