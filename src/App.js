@@ -22,6 +22,7 @@ import Tank from "./Pages/Tanktops/Tanktops";
 import Crop from "./Pages/Croptop/Croptop";
 import Short from "./Pages/Short/Short";
 import Cap from "./Pages/Cap/Cap";
+import Check from "./Pages/Check/Check"
 
 function App() {
 
@@ -44,6 +45,7 @@ function App() {
         <Route path="/crop" element={<Crop />} />
         <Route path="/short" element={<Short />} />
         <Route path="/cap" element={<Cap />} />
+        <Route path="/check" element={<Check />} />
       </Routes>
 
        {/* Footer always visible */}

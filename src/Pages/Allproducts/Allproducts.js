@@ -87,14 +87,6 @@ const stocks = [
     soldOut: false,
     link: "/cap"
   },
-  {
-    id: 10,
-    name: "Timeless New Caps - Red",
-    price: "₦20,000.00",
-    image: RedCap,
-    soldOut: false,
-    link: "/cap"
-  }
 ];
 
 const AllProducts = () => {
