@@ -1,11 +1,10 @@
 import React from "react";
-import "@fontsource/montserrat"; // Defaults to 400 weight
-import "@fontsource/montserrat/700.css"; // Optional: bold
+import "@fontsource/montserrat";
+import "@fontsource/montserrat/700.css"; 
 import "./App.css";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import ScrollToTop from './Components/Scroll/Scroll';
-
 import Navbar from "./Components/Navbar/Navbar";
 import Footer from "./Components/Footer/Footer";
 
@@ -28,7 +27,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      {/* Navbar always visible */}
+
       <ScrollToTop />
       <Navbar />
 
@@ -48,7 +47,6 @@ function App() {
         <Route path="/check" element={<Check />} />
       </Routes>
 
-       {/* Footer always visible */}
       <Footer />
     </BrowserRouter>
   );
