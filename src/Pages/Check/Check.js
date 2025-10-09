@@ -5,7 +5,7 @@ import { VscCreditCard } from "react-icons/vsc";
 
 // Helper: extract numeric price from "₦50,000.00"
 const parsePrice = (priceStr) => {
-  const numStr = priceStr.replace(/[^\d.]/g, "");
+  const numStr = priceStr.replace(/[^\d.]/g, ""); 
   return parseFloat(numStr) || 0;
 };
 
@@ -17,6 +17,471 @@ const formatNGN = (value) => {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
+};
+
+// DHL Shipping Rates
+const DHL_RATES = {
+  // Zone 1: UK, Ireland
+  "UK": {
+    "0-2kg": 61500, "2.5kg": 87000, "3kg": 93800, "3.5kg": 97000,
+    "4kg": 102000, "4.5kg": 116500, "5kg": 120500, "5.5-6kg": 139000,
+    "6.5-7kg": 152000, "7.5-8kg": 169800, "8.5-9kg": 197000,
+    "9.5-10kg": 216500, "above10kg": 21000
+  },
+  "Ireland": {
+    "0-2kg": 61500, "2.5kg": 87000, "3kg": 93800, "3.5kg": 97000,
+    "4kg": 102000, "4.5kg": 116500, "5kg": 120500, "5.5-6kg": 139000,
+    "6.5-7kg": 152000, "7.5-8kg": 169800, "8.5-9kg": 197000,
+    "9.5-10kg": 216500, "above10kg": 21000
+  },
+
+  // Zone 2: West African Countries
+  "Benin": {
+    "0-2kg": 64000, "2.5kg": 82000, "3kg": 96800, "3.5kg": 103000,
+    "4kg": 109500, "4.5kg": 118000, "5kg": 128000, "5.5-6kg": 152500,
+    "6.5-7kg": 169800, "7.5-8kg": 178000, "8.5-9kg": 191500,
+    "9.5-10kg": 215000, "above10kg": 22500
+  },
+  "Ghana": {
+    "0-2kg": 64000, "2.5kg": 82000, "3kg": 96800, "3.5kg": 103000,
+    "4kg": 109500, "4.5kg": 118000, "5kg": 128000, "5.5-6kg": 152500,
+    "6.5-7kg": 169800, "7.5-8kg": 178000, "8.5-9kg": 191500,
+    "9.5-10kg": 215000, "above10kg": 22500
+  },
+  "Gambia": {
+    "0-2kg": 64000, "2.5kg": 82000, "3kg": 96800, "3.5kg": 103000,
+    "4kg": 109500, "4.5kg": 118000, "5kg": 128000, "5.5-6kg": 152500,
+    "6.5-7kg": 169800, "7.5-8kg": 178000, "8.5-9kg": 191500,
+    "9.5-10kg": 215000, "above10kg": 22500
+  },
+  "Sierra Leone": {
+    "0-2kg": 64000, "2.5kg": 82000, "3kg": 96800, "3.5kg": 103000,
+    "4kg": 109500, "4.5kg": 118000, "5kg": 128000, "5.5-6kg": 152500,
+    "6.5-7kg": 169800, "7.5-8kg": 178000, "8.5-9kg": 191500,
+    "9.5-10kg": 215000, "above10kg": 22500
+  },
+  "Togo": {
+    "0-2kg": 64000, "2.5kg": 82000, "3kg": 96800, "3.5kg": 103000,
+    "4kg": 109500, "4.5kg": 118000, "5kg": 128000, "5.5-6kg": 152500,
+    "6.5-7kg": 169800, "7.5-8kg": 178000, "8.5-9kg": 191500,
+    "9.5-10kg": 215000, "above10kg": 22500
+  },
+  "Liberia": {
+    "0-2kg": 64000, "2.5kg": 82000, "3kg": 96800, "3.5kg": 103000,
+    "4kg": 109500, "4.5kg": 118000, "5kg": 128000, "5.5-6kg": 152500,
+    "6.5-7kg": 169800, "7.5-8kg": 178000, "8.5-9kg": 191500,
+    "9.5-10kg": 215000, "above10kg": 22500
+  },
+  "Mali": {
+    "0-2kg": 64000, "2.5kg": 82000, "3kg": 96800, "3.5kg": 103000,
+    "4kg": 109500, "4.5kg": 118000, "5kg": 128000, "5.5-6kg": 152500,
+    "6.5-7kg": 169800, "7.5-8kg": 178000, "8.5-9kg": 191500,
+    "9.5-10kg": 215000, "above10kg": 22500
+  },
+  "Niger": {
+    "0-2kg": 64000, "2.5kg": 82000, "3kg": 96800, "3.5kg": 103000,
+    "4kg": 109500, "4.5kg": 118000, "5kg": 128000, "5.5-6kg": 152500,
+    "6.5-7kg": 169800, "7.5-8kg": 178000, "8.5-9kg": 191500,
+    "9.5-10kg": 215000, "above10kg": 22500
+  },
+  "Cameroon": {
+    "0-2kg": 64000, "2.5kg": 82000, "3kg": 96800, "3.5kg": 103000,
+    "4kg": 109500, "4.5kg": 118000, "5kg": 128000, "5.5-6kg": 152500,
+    "6.5-7kg": 169800, "7.5-8kg": 178000, "8.5-9kg": 191500,
+    "9.5-10kg": 215000, "above10kg": 22500
+  },
+
+  // Zone 3: USA, Canada, Mexico
+  "United States": {
+    "0-2kg": 70000, "2.5kg": 102000, "3kg": 125000, "3.5kg": 137000,
+    "4kg": 151800, "4.5kg": 165000, "5kg": 178000, "5.5-6kg": 199500,
+    "6.5-7kg": 220000, "7.5-8kg": 246000, "8.5-9kg": 270000,
+    "9.5-10kg": 295000, "above10kg": 31000
+  },
+  "Canada": {
+    "0-2kg": 70000, "2.5kg": 102000, "3kg": 125000, "3.5kg": 137000,
+    "4kg": 151800, "4.5kg": 165000, "5kg": 178000, "5.5-6kg": 199500,
+    "6.5-7kg": 220000, "7.5-8kg": 246000, "8.5-9kg": 270000,
+    "9.5-10kg": 295000, "above10kg": 31000
+  },
+  "Mexico": {
+    "0-2kg": 70000, "2.5kg": 102000, "3kg": 125000, "3.5kg": 137000,
+    "4kg": 151800, "4.5kg": 165000, "5kg": 178000, "5.5-6kg": 199500,
+    "6.5-7kg": 220000, "7.5-8kg": 246000, "8.5-9kg": 270000,
+    "9.5-10kg": 295000, "above10kg": 31000
+  },
+
+  // Zone 4: Europe
+  "Germany": {
+    "0-2kg": 72000, "2.5kg": 103000, "3kg": 126500, "3.5kg": 138000,
+    "4kg": 154000, "4.5kg": 165000, "5kg": 179000, "5.5-6kg": 209000,
+    "6.5-7kg": 226000, "7.5-8kg": 251000, "8.5-9kg": 272000,
+    "9.5-10kg": 301000, "above10kg": 32000
+  },
+  "Belgium": {
+    "0-2kg": 72000, "2.5kg": 103000, "3kg": 126500, "3.5kg": 138000,
+    "4kg": 154000, "4.5kg": 165000, "5kg": 179000, "5.5-6kg": 209000,
+    "6.5-7kg": 226000, "7.5-8kg": 251000, "8.5-9kg": 272000,
+    "9.5-10kg": 301000, "above10kg": 32000
+  },
+  "Italy": {
+    "0-2kg": 72000, "2.5kg": 103000, "3kg": 126500, "3.5kg": 138000,
+    "4kg": 154000, "4.5kg": 165000, "5kg": 179000, "5.5-6kg": 209000,
+    "6.5-7kg": 226000, "7.5-8kg": 251000, "8.5-9kg": 272000,
+    "9.5-10kg": 301000, "above10kg": 32000
+  },
+  "Sweden": {
+    "0-2kg": 72000, "2.5kg": 103000, "3kg": 126500, "3.5kg": 138000,
+    "4kg": 154000, "4.5kg": 165000, "5kg": 179000, "5.5-6kg": 209000,
+    "6.5-7kg": 226000, "7.5-8kg": 251000, "8.5-9kg": 272000,
+    "9.5-10kg": 301000, "above10kg": 32000
+  },
+  "France": {
+    "0-2kg": 72000, "2.5kg": 103000, "3kg": 126500, "3.5kg": 138000,
+    "4kg": 154000, "4.5kg": 165000, "5kg": 179000, "5.5-6kg": 209000,
+    "6.5-7kg": 226000, "7.5-8kg": 251000, "8.5-9kg": 272000,
+    "9.5-10kg": 301000, "above10kg": 32000
+  },
+  "Netherlands": {
+    "0-2kg": 72000, "2.5kg": 103000, "3kg": 126500, "3.5kg": 138000,
+    "4kg": 154000, "4.5kg": 165000, "5kg": 179000, "5.5-6kg": 209000,
+    "6.5-7kg": 226000, "7.5-8kg": 251000, "8.5-9kg": 272000,
+    "9.5-10kg": 301000, "above10kg": 32000
+  },
+  "Switzerland": {
+    "0-2kg": 72000, "2.5kg": 103000, "3kg": 126500, "3.5kg": 138000,
+    "4kg": 154000, "4.5kg": 165000, "5kg": 179000, "5.5-6kg": 209000,
+    "6.5-7kg": 226000, "7.5-8kg": 251000, "8.5-9kg": 272000,
+    "9.5-10kg": 301000, "above10kg": 32000
+  },
+  "Iceland": {
+    "0-2kg": 72000, "2.5kg": 103000, "3kg": 126500, "3.5kg": 138000,
+    "4kg": 154000, "4.5kg": 165000, "5kg": 179000, "5.5-6kg": 209000,
+    "6.5-7kg": 226000, "7.5-8kg": 251000, "8.5-9kg": 272000,
+    "9.5-10kg": 301000, "above10kg": 32000
+  },
+  "Luxembourg": {
+    "0-2kg": 72000, "2.5kg": 103000, "3kg": 126500, "3.5kg": 138000,
+    "4kg": 154000, "4.5kg": 165000, "5kg": 179000, "5.5-6kg": 209000,
+    "6.5-7kg": 226000, "7.5-8kg": 251000, "8.5-9kg": 272000,
+    "9.5-10kg": 301000, "above10kg": 32000
+  },
+  "Turkey": {
+    "0-2kg": 72000, "2.5kg": 103000, "3kg": 126500, "3.5kg": 138000,
+    "4kg": 154000, "4.5kg": 165000, "5kg": 179000, "5.5-6kg": 209000,
+    "6.5-7kg": 226000, "7.5-8kg": 251000, "8.5-9kg": 272000,
+    "9.5-10kg": 301000, "above10kg": 32000
+  },
+  "Finland": {
+    "0-2kg": 72000, "2.5kg": 103000, "3kg": 126500, "3.5kg": 138000,
+    "4kg": 154000, "4.5kg": 165000, "5kg": 179000, "5.5-6kg": 209000,
+    "6.5-7kg": 226000, "7.5-8kg": 251000, "8.5-9kg": 272000,
+    "9.5-10kg": 301000, "above10kg": 32000
+  },
+  "Spain": {
+    "0-2kg": 72000, "2.5kg": 103000, "3kg": 126500, "3.5kg": 138000,
+    "4kg": 154000, "4.5kg": 165000, "5kg": 179000, "5.5-6kg": 209000,
+    "6.5-7kg": 226000, "7.5-8kg": 251000, "8.5-9kg": 272000,
+    "9.5-10kg": 301000, "above10kg": 32000
+  },
+
+  // Zone 5: Africa
+  "South Africa": {
+    "0-2kg": 81500, "2.5kg": 106500, "3kg": 129000, "3.5kg": 140000,
+    "4kg": 155000, "4.5kg": 168000, "5kg": 182000, "5.5-6kg": 210000,
+    "6.5-7kg": 239000, "7.5-8kg": 252000, "8.5-9kg": 290000,
+    "9.5-10kg": 350000, "above10kg": 32000
+  },
+  "Tanzania": {
+    "0-2kg": 81500, "2.5kg": 106500, "3kg": 129000, "3.5kg": 140000,
+    "4kg": 155000, "4.5kg": 168000, "5kg": 182000, "5.5-6kg": 210000,
+    "6.5-7kg": 239000, "7.5-8kg": 252000, "8.5-9kg": 290000,
+    "9.5-10kg": 350000, "above10kg": 32000
+  },
+  "Uganda": {
+    "0-2kg": 81500, "2.5kg": 106500, "3kg": 129000, "3.5kg": 140000,
+    "4kg": 155000, "4.5kg": 168000, "5kg": 182000, "5.5-6kg": 210000,
+    "6.5-7kg": 239000, "7.5-8kg": 252000, "8.5-9kg": 290000,
+    "9.5-10kg": 350000, "above10kg": 32000
+  },
+  "Egypt": {
+    "0-2kg": 81500, "2.5kg": 106500, "3kg": 129000, "3.5kg": 140000,
+    "4kg": 155000, "4.5kg": 168000, "5kg": 182000, "5.5-6kg": 210000,
+    "6.5-7kg": 239000, "7.5-8kg": 252000, "8.5-9kg": 290000,
+    "9.5-10kg": 350000, "above10kg": 32000
+  },
+  "Mauritania": {
+    "0-2kg": 81500, "2.5kg": 106500, "3kg": 129000, "3.5kg": 140000,
+    "4kg": 155000, "4.5kg": 168000, "5kg": 182000, "5.5-6kg": 210000,
+    "6.5-7kg": 239000, "7.5-8kg": 252000, "8.5-9kg": 290000,
+    "9.5-10kg": 350000, "above10kg": 32000
+  },
+  "Algeria": {
+    "0-2kg": 81500, "2.5kg": 106500, "3kg": 129000, "3.5kg": 140000,
+    "4kg": 155000, "4.5kg": 168000, "5kg": 182000, "5.5-6kg": 210000,
+    "6.5-7kg": 239000, "7.5-8kg": 252000, "8.5-9kg": 290000,
+    "9.5-10kg": 350000, "above10kg": 32000
+  },
+  "Rwanda": {
+    "0-2kg": 81500, "2.5kg": 106500, "3kg": 129000, "3.5kg": 140000,
+    "4kg": 155000, "4.5kg": 168000, "5kg": 182000, "5.5-6kg": 210000,
+    "6.5-7kg": 239000, "7.5-8kg": 252000, "8.5-9kg": 290000,
+    "9.5-10kg": 350000, "above10kg": 32000
+  },
+  "Namibia": {
+    "0-2kg": 81500, "2.5kg": 106500, "3kg": 129000, "3.5kg": 140000,
+    "4kg": 155000, "4.5kg": 168000, "5kg": 182000, "5.5-6kg": 210000,
+    "6.5-7kg": 239000, "7.5-8kg": 252000, "8.5-9kg": 290000,
+    "9.5-10kg": 350000, "above10kg": 32000
+  },
+  "Botswana": {
+    "0-2kg": 81500, "2.5kg": 106500, "3kg": 129000, "3.5kg": 140000,
+    "4kg": 155000, "4.5kg": 168000, "5kg": 182000, "5.5-6kg": 210000,
+    "6.5-7kg": 239000, "7.5-8kg": 252000, "8.5-9kg": 290000,
+    "9.5-10kg": 350000, "above10kg": 32000
+  },
+
+  // Zone 6: Middle East
+  "United Arab Emirates": {
+    "0-2kg": 86000, "2.5kg": 111500, "3kg": 140000, "3.5kg": 158800,
+    "4kg": 171500, "4.5kg": 174000, "5kg": 193000, "5.5-6kg": 215000,
+    "6.5-7kg": 250000, "7.5-8kg": 300000, "8.5-9kg": 325000,
+    "9.5-10kg": 360000, "above10kg": 33000
+  },
+  "Saudi Arabia": {
+    "0-2kg": 86000, "2.5kg": 111500, "3kg": 140000, "3.5kg": 158800,
+    "4kg": 171500, "4.5kg": 174000, "5kg": 193000, "5.5-6kg": 215000,
+    "6.5-7kg": 250000, "7.5-8kg": 300000, "8.5-9kg": 325000,
+    "9.5-10kg": 360000, "above10kg": 33000
+  },
+  "Lebanon": {
+    "0-2kg": 86000, "2.5kg": 111500, "3kg": 140000, "3.5kg": 158800,
+    "4kg": 171500, "4.5kg": 174000, "5kg": 193000, "5.5-6kg": 215000,
+    "6.5-7kg": 250000, "7.5-8kg": 300000, "8.5-9kg": 325000,
+    "9.5-10kg": 360000, "above10kg": 33000
+  },
+  "Bahrain": {
+    "0-2kg": 86000, "2.5kg": 111500, "3kg": 140000, "3.5kg": 158800,
+    "4kg": 171500, "4.5kg": 174000, "5kg": 193000, "5.5-6kg": 215000,
+    "6.5-7kg": 250000, "7.5-8kg": 300000, "8.5-9kg": 325000,
+    "9.5-10kg": 360000, "above10kg": 33000
+  },
+  "Israel": {
+    "0-2kg": 86000, "2.5kg": 111500, "3kg": 140000, "3.5kg": 158800,
+    "4kg": 171500, "4.5kg": 174000, "5kg": 193000, "5.5-6kg": 215000,
+    "6.5-7kg": 250000, "7.5-8kg": 300000, "8.5-9kg": 325000,
+    "9.5-10kg": 360000, "above10kg": 33000
+  },
+  "Oman": {
+    "0-2kg": 86000, "2.5kg": 111500, "3kg": 140000, "3.5kg": 158800,
+    "4kg": 171500, "4.5kg": 174000, "5kg": 193000, "5.5-6kg": 215000,
+    "6.5-7kg": 250000, "7.5-8kg": 300000, "8.5-9kg": 325000,
+    "9.5-10kg": 360000, "above10kg": 33000
+  },
+  "Jordan": {
+    "0-2kg": 86000, "2.5kg": 111500, "3kg": 140000, "3.5kg": 158800,
+    "4kg": 171500, "4.5kg": 174000, "5kg": 193000, "5.5-6kg": 215000,
+    "6.5-7kg": 250000, "7.5-8kg": 300000, "8.5-9kg": 325000,
+    "9.5-10kg": 360000, "above10kg": 33000
+  },
+  "Syria": {
+    "0-2kg": 86000, "2.5kg": 111500, "3kg": 140000, "3.5kg": 158800,
+    "4kg": 171500, "4.5kg": 174000, "5kg": 193000, "5.5-6kg": 215000,
+    "6.5-7kg": 250000, "7.5-8kg": 300000, "8.5-9kg": 325000,
+    "9.5-10kg": 360000, "above10kg": 33000
+  },
+
+  // Zone 7: Asia
+  "India": {
+    "0-2kg": 94000, "2.5kg": 118500, "3kg": 147500, "3.5kg": 161500,
+    "4kg": 172000, "4.5kg": 178000, "5kg": 186000, "5.5-6kg": 231000,
+    "6.5-7kg": 270000, "7.5-8kg": 300000, "8.5-9kg": 345000,
+    "9.5-10kg": 385000, "above10kg": 37000
+  },
+  "Singapore": {
+    "0-2kg": 94000, "2.5kg": 118500, "3kg": 147500, "3.5kg": 161500,
+    "4kg": 172000, "4.5kg": 178000, "5kg": 186000, "5.5-6kg": 231000,
+    "6.5-7kg": 270000, "7.5-8kg": 300000, "8.5-9kg": 345000,
+    "9.5-10kg": 385000, "above10kg": 37000
+  },
+  "Thailand": {
+    "0-2kg": 94000, "2.5kg": 118500, "3kg": 147500, "3.5kg": 161500,
+    "4kg": 172000, "4.5kg": 178000, "5kg": 186000, "5.5-6kg": 231000,
+    "6.5-7kg": 270000, "7.5-8kg": 300000, "8.5-9kg": 345000,
+    "9.5-10kg": 385000, "above10kg": 37000
+  },
+  "Philippines": {
+    "0-2kg": 94000, "2.5kg": 118500, "3kg": 147500, "3.5kg": 161500,
+    "4kg": 172000, "4.5kg": 178000, "5kg": 186000, "5.5-6kg": 231000,
+    "6.5-7kg": 270000, "7.5-8kg": 300000, "8.5-9kg": 345000,
+    "9.5-10kg": 385000, "above10kg": 37000
+  },
+  "Malaysia": {
+    "0-2kg": 94000, "2.5kg": 118500, "3kg": 147500, "3.5kg": 161500,
+    "4kg": 172000, "4.5kg": 178000, "5kg": 186000, "5.5-6kg": 231000,
+    "6.5-7kg": 270000, "7.5-8kg": 300000, "8.5-9kg": 345000,
+    "9.5-10kg": 385000, "above10kg": 37000
+  },
+  "Pakistan": {
+    "0-2kg": 94000, "2.5kg": 118500, "3kg": 147500, "3.5kg": 161500,
+    "4kg": 172000, "4.5kg": 178000, "5kg": 186000, "5.5-6kg": 231000,
+    "6.5-7kg": 270000, "7.5-8kg": 300000, "8.5-9kg": 345000,
+    "9.5-10kg": 385000, "above10kg": 37000
+  },
+  "Maldives": {
+    "0-2kg": 94000, "2.5kg": 118500, "3kg": 147500, "3.5kg": 161500,
+    "4kg": 172000, "4.5kg": 178000, "5kg": 186000, "5.5-6kg": 231000,
+    "6.5-7kg": 270000, "7.5-8kg": 300000, "8.5-9kg": 345000,
+    "9.5-10kg": 385000, "above10kg": 37000
+  },
+  "Georgia": {
+    "0-2kg": 94000, "2.5kg": 118500, "3kg": 147500, "3.5kg": 161500,
+    "4kg": 172000, "4.5kg": 178000, "5kg": 186000, "5.5-6kg": 231000,
+    "6.5-7kg": 270000, "7.5-8kg": 300000, "8.5-9kg": 345000,
+    "9.5-10kg": 385000, "above10kg": 37000
+  },
+  "Hong Kong": {
+    "0-2kg": 94000, "2.5kg": 118500, "3kg": 147500, "3.5kg": 161500,
+    "4kg": 172000, "4.5kg": 178000, "5kg": 186000, "5.5-6kg": 231000,
+    "6.5-7kg": 270000, "7.5-8kg": 300000, "8.5-9kg": 345000,
+    "9.5-10kg": 385000, "above10kg": 37000
+  },
+  "Japan": {
+    "0-2kg": 94000, "2.5kg": 118500, "3kg": 147500, "3.5kg": 161500,
+    "4kg": 172000, "4.5kg": 178000, "5kg": 186000, "5.5-6kg": 231000,
+    "6.5-7kg": 270000, "7.5-8kg": 300000, "8.5-9kg": 345000,
+    "9.5-10kg": 385000, "above10kg": 37000
+  },
+  "Vietnam": {
+    "0-2kg": 94000, "2.5kg": 118500, "3kg": 147500, "3.5kg": 161500,
+    "4kg": 172000, "4.5kg": 178000, "5kg": 186000, "5.5-6kg": 231000,
+    "6.5-7kg": 270000, "7.5-8kg": 300000, "8.5-9kg": 345000,
+    "9.5-10kg": 385000, "above10kg": 37000
+  },
+
+  // Zone 8: Australia, Caribbean, South America
+  "Australia": {
+    "0-2kg": 105000, "2.5kg": 149000, "3kg": 159000, "3.5kg": 177000,
+    "4kg": 191000, "4.5kg": 218000, "5kg": 238000, "5.5-6kg": 284000,
+    "6.5-7kg": 330000, "7.5-8kg": 368500, "8.5-9kg": 405000,
+    "9.5-10kg": 460000, "above10kg": 40000
+  },
+  "Trinidad and Tobago": {
+    "0-2kg": 105000, "2.5kg": 149000, "3kg": 159000, "3.5kg": 177000,
+    "4kg": 191000, "4.5kg": 218000, "5kg": 238000, "5.5-6kg": 284000,
+    "6.5-7kg": 330000, "7.5-8kg": 368500, "8.5-9kg": 405000,
+    "9.5-10kg": 460000, "above10kg": 40000
+  },
+  "Grenada": {
+    "0-2kg": 105000, "2.5kg": 149000, "3kg": 159000, "3.5kg": 177000,
+    "4kg": 191000, "4.5kg": 218000, "5kg": 238000, "5.5-6kg": 284000,
+    "6.5-7kg": 330000, "7.5-8kg": 368500, "8.5-9kg": 405000,
+    "9.5-10kg": 460000, "above10kg": 40000
+  },
+  "Jamaica": {
+    "0-2kg": 105000, "2.5kg": 149000, "3kg": 159000, "3.5kg": 177000,
+    "4kg": 191000, "4.5kg": 218000, "5kg": 238000, "5.5-6kg": 284000,
+    "6.5-7kg": 330000, "7.5-8kg": 368500, "8.5-9kg": 405000,
+    "9.5-10kg": 460000, "above10kg": 40000
+  },
+  "Saint Lucia": {
+    "0-2kg": 105000, "2.5kg": 149000, "3kg": 159000, "3.5kg": 177000,
+    "4kg": 191000, "4.5kg": 218000, "5kg": 238000, "5.5-6kg": 284000,
+    "6.5-7kg": 330000, "7.5-8kg": 368500, "8.5-9kg": 405000,
+    "9.5-10kg": 460000, "above10kg": 40000
+  },
+  "Uruguay": {
+    "0-2kg": 105000, "2.5kg": 149000, "3kg": 159000, "3.5kg": 177000,
+    "4kg": 191000, "4.5kg": 218000, "5kg": 238000, "5.5-6kg": 284000,
+    "6.5-7kg": 330000, "7.5-8kg": 368500, "8.5-9kg": 405000,
+    "9.5-10kg": 460000, "above10kg": 40000
+  },
+  "Guyana": {
+    "0-2kg": 105000, "2.5kg": 149000, "3kg": 159000, "3.5kg": 177000,
+    "4kg": 191000, "4.5kg": 218000, "5kg": 238000, "5.5-6kg": 284000,
+    "6.5-7kg": 330000, "7.5-8kg": 368500, "8.5-9kg": 405000,
+    "9.5-10kg": 460000, "above10kg": 40000
+  },
+  "New Zealand": {
+    "0-2kg": 105000, "2.5kg": 149000, "3kg": 159000, "3.5kg": 177000,
+    "4kg": 191000, "4.5kg": 218000, "5kg": 238000, "5.5-6kg": 284000,
+    "6.5-7kg": 330000, "7.5-8kg": 368500, "8.5-9kg": 405000,
+    "9.5-10kg": 460000, "above10kg": 40000
+  },
+  "Saint Kitts and Nevis": {
+    "0-2kg": 105000, "2.5kg": 149000, "3kg": 159000, "3.5kg": 177000,
+    "4kg": 191000, "4.5kg": 218000, "5kg": 238000, "5.5-6kg": 284000,
+    "6.5-7kg": 330000, "7.5-8kg": 368500, "8.5-9kg": 405000,
+    "9.5-10kg": 460000, "above10kg": 40000
+  },
+  "French Guiana": {
+    "0-2kg": 105000, "2.5kg": 149000, "3kg": 159000, "3.5kg": 177000,
+    "4kg": 191000, "4.5kg": 218000, "5kg": 238000, "5.5-6kg": 284000,
+    "6.5-7kg": 330000, "7.5-8kg": 368500, "8.5-9kg": 405000,
+    "9.5-10kg": 460000, "above10kg": 40000
+  },
+  "Dominica": {
+    "0-2kg": 105000, "2.5kg": 149000, "3kg": 159000, "3.5kg": 177000,
+    "4kg": 191000, "4.5kg": 218000, "5kg": 238000, "5.5-6kg": 284000,
+    "6.5-7kg": 330000, "7.5-8kg": 368500, "8.5-9kg": 405000,
+    "9.5-10kg": 460000, "above10kg": 40000
+  }
+};
+
+// Calculate shipping cost based on country and weight
+const getShippingCost = (country, weight) => {
+  if (country.toLowerCase() === "nigeria") return 5000;
+  
+  const countryRates = DHL_RATES[country];
+  if (!countryRates) return 0;
+
+  if (weight <= 2) return countryRates["0-2kg"];
+  if (weight <= 2.5) return countryRates["2.5kg"];
+  if (weight <= 3) return countryRates["3kg"];
+  if (weight <= 3.5) return countryRates["3.5kg"];
+  if (weight <= 4) return countryRates["4kg"];
+  if (weight <= 4.5) return countryRates["4.5kg"];
+  if (weight <= 5) return countryRates["5kg"];
+  if (weight <= 6) return countryRates["5.5-6kg"];
+  if (weight <= 7) return countryRates["6.5-7kg"];
+  if (weight <= 8) return countryRates["7.5-8kg"];
+  if (weight <= 9) return countryRates["8.5-9kg"];
+  if (weight <= 10) return countryRates["9.5-10kg"];
+  
+  // For weights above 10kg
+  const baseRate = countryRates["9.5-10kg"];
+  const additionalWeight = weight - 10;
+  return baseRate + (additionalWeight * countryRates["above10kg"]);
+};
+
+// Generate Order ID
+const generateOrderId = () => {
+  return `ORDER-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+};
+
+// Send Email Notification
+const sendEmailNotification = async (orderData) => {
+  try {
+    // Replace with your email service API endpoint
+    const response = await fetch('https://your-email-service.com/api/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        to: 'timeless.since1982@gmail.com',
+        subject: `New Order: ${orderData.orderId}`,
+        text: `New Order Details:\n\nOrder ID: ${orderData.orderId}\nCustomer: ${orderData.contact.firstName} ${orderData.contact.lastName}\nEmail: ${orderData.contact.email}\nPhone: ${orderData.shipping.phone}\n\nShipping Address:\n${orderData.shipping.address}\n${orderData.shipping.city}, ${orderData.shipping.town || ''} ${orderData.shipping.state}\n${orderData.shipping.country}\n\nItems: ${orderData.items.length}\nTotal: ${formatNGN(orderData.total)}\nShipping: ${formatNGN(orderData.shippingCost)}\n\n`,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Email service failed');
+    }
+  } catch (error) {
+    console.error('Failed to send email notification:', error);
+    // Don't prevent checkout if email fails
+  }
 };
 
 const Checkout = () => {
@@ -44,7 +509,8 @@ const Checkout = () => {
     address: "",
     apartment: "",
     city: "",
-    state: "Lagos",
+    town: "", // Added town field
+    state: "", // Changed to empty string for manual entry
     postalCode: "",
     phone: "",
     saveInfo: false,
@@ -58,12 +524,11 @@ const Checkout = () => {
     address: "",
     apartment: "",
     city: "",
-    state: "Lagos",
+    town: "", // Added town field
+    state: "", // Changed to empty string for manual entry
     postalCode: "",
     phone: "",
   });
-
-  const [shippingMethod] = useState("standard");
 
   // Calculate totals
   const subtotal = cartItems.reduce((sum, item) => {
@@ -71,7 +536,9 @@ const Checkout = () => {
     return sum + price * item.quantity;
   }, 0);
 
-  const shippingCost = 8600; // ₦8,600.00
+  // Calculate weight and shipping cost
+  const totalWeight = cartItems.reduce((total, item) => total + (item.quantity * 0.5), 0);
+  const shippingCost = getShippingCost(shipping.country, totalWeight);
   const total = subtotal + shippingCost;
 
   // Handlers
@@ -100,7 +567,7 @@ const Checkout = () => {
     setBilling((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Stripe redirect (simulated for now)
+  // Single Payment Link Handler
   const handlePayNow = async () => {
     if (!contact.email) {
       alert("Please enter your email or phone number.");
@@ -111,32 +578,34 @@ const Checkout = () => {
       return;
     }
 
-    // Simulate sending to backend
-    console.log("Order data:", {
-      contact,
-      shipping: shipping,
-      billing: billing.sameAsShipping ? shipping : billing,
-      shippingMethod,
-      lineItems: cartItems.map(item => ({
-        name: item.name,
-        quantity: item.quantity,
-        price: parsePrice(item.price),
-      })),
+    // Generate order ID
+    const orderId = generateOrderId();
+
+    // Prepare order data for email notification
+    const orderData = {
+      orderId,
+      contact: {
+        ...contact,
+        firstName: shipping.firstName,
+        lastName: shipping.lastName
+      },
+      shipping,
+      items: cartItems,
       subtotal,
       shippingCost,
       total,
-    });
+    };
 
-    alert("Redirecting to Stripe... (No backend yet)");
-    // In production, replace this with:
-    // const session = await fetch('/api/create-checkout-session', { method: 'POST', body: JSON.stringify(orderData) })
-    // window.location = session.url;
+    // Send email notification to owner
+    await sendEmailNotification(orderData);
+
+    // Replace with your actual Stripe payment link
+    const stripePaymentLink = `https://your-stripe-payment-link.com?orderId=${orderId}`; // <- Include order ID in link
+    window.location.href = stripePaymentLink;
   };
 
   return (
     <div className="checkout-page">
-      
-
       <div className="checkout-layout">
         {/* Left Column: Form */}
         <div className="checkout-form">
@@ -178,6 +647,71 @@ const Checkout = () => {
                 onChange={handleShippingChange}
               >
                 <option value="Nigeria">Nigeria</option>
+                <option value="UK">UK</option>
+                <option value="Ireland">Ireland</option>
+                <option value="Benin">Benin</option>
+                <option value="Ghana">Ghana</option>
+                <option value="Gambia">Gambia</option>
+                <option value="Sierra Leone">Sierra Leone</option>
+                <option value="Togo">Togo</option>
+                <option value="Liberia">Liberia</option>
+                <option value="Mali">Mali</option>
+                <option value="Niger">Niger</option>
+                <option value="Cameroon">Cameroon</option>
+                <option value="United States">USA</option>
+                <option value="Canada">Canada</option>
+                <option value="Mexico">Mexico</option>
+                <option value="Germany">Germany</option>
+                <option value="Belgium">Belgium</option>
+                <option value="Italy">Italy</option>
+                <option value="Sweden">Sweden</option>
+                <option value="France">France</option>
+                <option value="Netherlands">Netherlands</option>
+                <option value="Switzerland">Switzerland</option>
+                <option value="Iceland">Iceland</option>
+                <option value="Luxembourg">Luxembourg</option>
+                <option value="Turkey">Turkey</option>
+                <option value="Finland">Finland</option>
+                <option value="Spain">Spain</option>
+                <option value="South Africa">South Africa</option>
+                <option value="Tanzania">Tanzania</option>
+                <option value="Uganda">Uganda</option>
+                <option value="Egypt">Egypt</option>
+                <option value="Mauritania">Mauritania</option>
+                <option value="Algeria">Algeria</option>
+                <option value="Rwanda">Rwanda</option>
+                <option value="Namibia">Namibia</option>
+                <option value="Botswana">Botswana</option>
+                <option value="United Arab Emirates">UAE</option>
+                <option value="Saudi Arabia">Saudi Arabia</option>
+                <option value="Lebanon">Lebanon</option>
+                <option value="Bahrain">Bahrain</option>
+                <option value="Israel">Israel</option>
+                <option value="Oman">Oman</option>
+                <option value="Jordan">Jordan</option>
+                <option value="Syria">Syria</option>
+                <option value="India">India</option>
+                <option value="Singapore">Singapore</option>
+                <option value="Thailand">Thailand</option>
+                <option value="Philippines">Philippines</option>
+                <option value="Malaysia">Malaysia</option>
+                <option value="Pakistan">Pakistan</option>
+                <option value="Maldives">Maldives</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Hong Kong">Hong Kong</option>
+                <option value="Japan">Japan</option>
+                <option value="Vietnam">Vietnam</option>
+                <option value="Australia">Australia</option>
+                <option value="Trinidad and Tobago">Trinidad & Tobago</option>
+                <option value="Grenada">Grenada</option>
+                <option value="Jamaica">Jamaica</option>
+                <option value="Saint Lucia">Saint Lucia</option>
+                <option value="Uruguay">Uruguay</option>
+                <option value="Guyana">Guyana</option>
+                <option value="New Zealand">New Zealand</option>
+                <option value="Saint Kitts and Nevis">St. Kitts & Nevis</option>
+                <option value="French Guiana">French Guiana</option>
+                <option value="Dominica">Dominica</option>
               </select>
             </div>
 
@@ -241,25 +775,24 @@ const Checkout = () => {
                 />
               </div>
               <div className="form-group third">
-                <select
-                  id="state"
-                  name="state"
-                  value={shipping.state}
+                <input
+                  type="text"
+                  id="town"
+                  name="town"
+                  value={shipping.town || ""}
                   onChange={handleShippingChange}
-                >
-                  <option value="Lagos">Lagos</option>
-                  <option value="Ogun">Ogun</option>
-                  <option value="Abuja">Abuja</option>
-                </select>
+                  placeholder="Town (optional)"
+                />
               </div>
               <div className="form-group third">
                 <input
                   type="text"
-                  id="postalCode"
-                  name="postalCode"
-                  value={shipping.postalCode}
+                  id="state"
+                  name="state"
+                  value={shipping.state}
                   onChange={handleShippingChange}
-                  placeholder="Postal code (optional)"
+                  placeholder="State"
+                  required
                 />
               </div>
             </div>
@@ -300,16 +833,17 @@ const Checkout = () => {
             <div className="shipping-option">
               <input
                 type="radio"
-                id="standard"
+                id="dhl"
                 name="shippingMethod"
-                value="standard"
-                checked={shippingMethod === "standard"}
+                value="dhl"
+                checked={true}
                 readOnly
               />
-              <label htmlFor="standard">
-                <span className="shipping-name">Standard</span>
+              <label htmlFor="dhl">
+                <span className="shipping-name">DHL Express</span>
                 <span className="shipping-price">{formatNGN(shippingCost)}</span>
               </label>
+              <p className="shipping-weight">Weight: {totalWeight.toFixed(1)}kg</p>
             </div>
           </section>
 
@@ -328,7 +862,7 @@ const Checkout = () => {
               <div className="payment-redirect-box">
                 <VscCreditCard className="atm"  />
                 <p>
-                  After clicking “Pay now”, you will be redirected to Stripe to complete your purchase securely.
+                  After clicking "Pay now", you will be redirected to Stripe to complete your purchase securely.
                 </p>
               </div>
             </div>
@@ -372,6 +906,71 @@ const Checkout = () => {
                     onChange={handleBillingChange}
                   >
                     <option value="Nigeria">Nigeria</option>
+                    <option value="UK">UK</option>
+                    <option value="Ireland">Ireland</option>
+                    <option value="Benin">Benin</option>
+                    <option value="Ghana">Ghana</option>
+                    <option value="Gambia">Gambia</option>
+                    <option value="Sierra Leone">Sierra Leone</option>
+                    <option value="Togo">Togo</option>
+                    <option value="Liberia">Liberia</option>
+                    <option value="Mali">Mali</option>
+                    <option value="Niger">Niger</option>
+                    <option value="Cameroon">Cameroon</option>
+                    <option value="United States">USA</option>
+                    <option value="Canada">Canada</option>
+                    <option value="Mexico">Mexico</option>
+                    <option value="Germany">Germany</option>
+                    <option value="Belgium">Belgium</option>
+                    <option value="Italy">Italy</option>
+                    <option value="Sweden">Sweden</option>
+                    <option value="France">France</option>
+                    <option value="Netherlands">Netherlands</option>
+                    <option value="Switzerland">Switzerland</option>
+                    <option value="Iceland">Iceland</option>
+                    <option value="Luxembourg">Luxembourg</option>
+                    <option value="Turkey">Turkey</option>
+                    <option value="Finland">Finland</option>
+                    <option value="Spain">Spain</option>
+                    <option value="South Africa">South Africa</option>
+                    <option value="Tanzania">Tanzania</option>
+                    <option value="Uganda">Uganda</option>
+                    <option value="Egypt">Egypt</option>
+                    <option value="Mauritania">Mauritania</option>
+                    <option value="Algeria">Algeria</option>
+                    <option value="Rwanda">Rwanda</option>
+                    <option value="Namibia">Namibia</option>
+                    <option value="Botswana">Botswana</option>
+                    <option value="United Arab Emirates">UAE</option>
+                    <option value="Saudi Arabia">Saudi Arabia</option>
+                    <option value="Lebanon">Lebanon</option>
+                    <option value="Bahrain">Bahrain</option>
+                    <option value="Israel">Israel</option>
+                    <option value="Oman">Oman</option>
+                    <option value="Jordan">Jordan</option>
+                    <option value="Syria">Syria</option>
+                    <option value="India">India</option>
+                    <option value="Singapore">Singapore</option>
+                    <option value="Thailand">Thailand</option>
+                    <option value="Philippines">Philippines</option>
+                    <option value="Malaysia">Malaysia</option>
+                    <option value="Pakistan">Pakistan</option>
+                    <option value="Maldives">Maldives</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Hong Kong">Hong Kong</option>
+                    <option value="Japan">Japan</option>
+                    <option value="Vietnam">Vietnam</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Trinidad and Tobago">Trinidad & Tobago</option>
+                    <option value="Grenada">Grenada</option>
+                    <option value="Jamaica">Jamaica</option>
+                    <option value="Saint Lucia">Saint Lucia</option>
+                    <option value="Uruguay">Uruguay</option>
+                    <option value="Guyana">Guyana</option>
+                    <option value="New Zealand">New Zealand</option>
+                    <option value="Saint Kitts and Nevis">St. Kitts & Nevis</option>
+                    <option value="French Guiana">French Guiana</option>
+                    <option value="Dominica">Dominica</option>
                   </select>
                 </div>
 
@@ -435,25 +1034,24 @@ const Checkout = () => {
                     />
                   </div>
                   <div className="form-group third">
-                    <select
-                      id="billState"
-                      name="state"
-                      value={billing.state}
+                    <input
+                      type="text"
+                      id="billTown"
+                      name="town"
+                      value={billing.town || ""}
                       onChange={handleBillingChange}
-                    >
-                      <option value="Lagos">Lagos</option>
-                      <option value="Ogun">Ogun</option>
-                      <option value="Abuja">Abuja</option>
-                    </select>
+                      placeholder="Town (optional)"
+                    />
                   </div>
                   <div className="form-group third">
                     <input
                       type="text"
-                      id="billPostalCode"
-                      name="postalCode"
-                      value={billing.postalCode}
+                      id="billState"
+                      name="state"
+                      value={billing.state}
                       onChange={handleBillingChange}
-                      placeholder="Postal code (optional)"
+                      placeholder="State"
+                      required
                     />
                   </div>
                 </div>
@@ -479,20 +1077,22 @@ const Checkout = () => {
 
         {/* Right Column: Order Summary */}
         <div className="order-summary">
-          <div className="summary-item">
-            <img
-              src={cartItems[0]?.image || "https://via.placeholder.com/60"}
-              alt={cartItems[0]?.name || "Product"}
-              className="item-image"
-            />
-            <div className="item-info">
-              <div className="item-name">{cartItems[0]?.name || "Item Name"}</div>
-              <div className="item-meta">S</div>
+          {cartItems.map((item, index) => (
+            <div className="summary-item" key={index}>
+              <img
+                src={item.image || "https://via.placeholder.com/60  "}
+                alt={item.name || "Product"}
+                className="item-image"
+              />
+              <div className="item-info">
+                <div className="item-name">{item.name}</div>
+                <div className="item-meta">Qty: {item.quantity}</div>
+              </div>
+              <div className="item-price">
+                {formatNGN(parsePrice(item.price) * item.quantity)}
+              </div>
             </div>
-            <div className="item-price">
-              {formatNGN(cartItems[0] ? parsePrice(cartItems[0].price) : 0)}
-            </div>
-          </div>
+          ))}
 
           <div className="discount-section">
             <input
@@ -510,8 +1110,12 @@ const Checkout = () => {
             <span>{formatNGN(subtotal)}</span>
           </div>
           <div className="summary-row">
-            <span>Shipping</span>
+            <span>Shipping (DHL - {shipping.country})</span>
             <span>{formatNGN(shippingCost)}</span>
+          </div>
+          <div className="summary-row">
+            <span>Weight</span>
+            <span>{totalWeight.toFixed(1)}kg</span>
           </div>
 
           <div className="summary-divider"></div>
